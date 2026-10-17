@@ -2,6 +2,7 @@
 
 #include <boost/hof/flow.hpp>
 
+#include <concepts>
 #include <cstdlib>
 #include <functional>
 #include <ranges>
@@ -15,6 +16,13 @@ static_assert(cpfp::inc(9) == 10);
 static_assert(cpfp::even(4));
 static_assert(cpfp::odd(3));
 static_assert(cpfp::between(1, 10)(5));
+static_assert([] {
+    int xs[]{1, 2, 3};
+    return (xs | cpfp::foldl(cpfp::add)(0)) == 6;
+}());
+static_assert(!std::invocable<decltype(cpfp::foldl), std::plus<>, int, std::vector<int>&, int>);
+static_assert(!std::invocable<decltype(cpfp::foldl(cpfp::add)), int, std::vector<int>&, int>);
+static_assert(!std::invocable<decltype(cpfp::foldl(cpfp::add)(0)), std::vector<int>&, int>);
 
 struct person {
     int age;
@@ -60,6 +68,32 @@ int main() {
     std::vector xs{1, 2, 3, 4, 5, 6};
     auto evaluate = boost::hof::flow(v::filter(cpfp::even), v::transform(cpfp::square), cpfp::sum);
     check(evaluate(xs) == 56);
+    check(cpfp::foldl(cpfp::add, 0, xs) == 21);
     check(cpfp::foldl(cpfp::add, 0)(xs) == 21);
+    check(cpfp::foldl(cpfp::add)(0, xs) == 21);
     check(cpfp::foldl(cpfp::add)(0)(xs) == 21);
+    check((xs | cpfp::sum) == 21);
+    check((xs | cpfp::foldl(cpfp::add, 0)) == 21);
+    check((xs | cpfp::foldl(cpfp::add)(0)) == 21);
+    check((xs | v::filter(cpfp::even) | v::transform(cpfp::square) | cpfp::sum) == 56);
+    check((xs | v::filter(cpfp::even) | cpfp::foldl(cpfp::mul)(1)) == 48);
+    check((std::vector{1, 2, 3} | cpfp::foldl(cpfp::sub)(100)) == 94);
+
+    auto fold_evaluate = boost::hof::flow(v::filter(cpfp::even), cpfp::foldl(cpfp::add)(0));
+    check(fold_evaluate(xs) == 12);
+
+    // Each evaluation starts from the saved accumulator, even after it was moved into fold_left.
+    std::vector initial{10};
+    const auto collect = cpfp::foldl([](std::vector<int> acc, int x) {
+        acc.push_back(x);
+        return acc;
+    })(initial);
+    initial.push_back(99);
+    const std::vector collected{10, 1, 2, 3, 4, 5, 6};
+    check((xs | collect) == collected);
+    check((xs | collect) == collected);
+
+    std::vector<int> empty;
+    check((empty | cpfp::sum) == 0);
+    check((empty | cpfp::foldl(cpfp::add)(7)) == 7);
 }

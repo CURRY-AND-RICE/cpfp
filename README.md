@@ -61,6 +61,15 @@ auto total = f(xs); // 56
 static_assert(fp::add(2)(3) == 5);
 ```
 
+`sum`と、演算・初期値を指定した`foldl`は、`|`構文でパイプラインの終端として使えます。
+従来の関数呼び出しと`boost::hof::flow`による合成も利用できます。
+
+```cpp
+auto total = xs | v::filter(fp::even) | v::transform(fp::square) | fp::sum; // 56
+auto product = xs | v::filter(fp::even) | fp::foldl(fp::mul)(1); // 48
+auto total2 = xs | fp::foldl(fp::add, 0); // 21
+```
+
 中核となる`partial_n<N>`は、`include/cpfp/detail/partial_n.hpp`で
 `boost::hof::limit`と`boost::hof::partial`の合成として実装しています。
 `limit`が保証するのは引数の**最大**個数であり、一般的な意味で引数の正確な個数を

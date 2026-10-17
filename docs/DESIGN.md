@@ -8,6 +8,9 @@
 - `cpfp::detail::partial_n<N>`を、固定引数個数のカリー化された関数オブジェクトに対する
   唯一の基盤とします。これは`boost::hof::partial`と
   `boost::hof::limit(integral_constant<N>{})`を合成したものです。
+- terminal用の`detail::terminal_partial_n<N>`も`partial_n<N>`を基盤とし、残りの引数が
+  rangeの1つになった段階で`boost::hof::pipable`に包みます。`foldl(op, init)`と
+  `foldl(op)(init)`のどちらも`|`の右辺に置けます。
 - 引数の**最大**個数を制限しても、呼び出し時の正確な引数個数が保証されるわけでは
   ありません。APIの契約はテストで検証します。
 - 二項関数では通常のオペランド順を維持します。たとえば`sub(10)(3) == 7`です。
