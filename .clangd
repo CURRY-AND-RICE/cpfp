@@ -1,0 +1,8 @@
+CompileFlags:
+  CompilationDatabase: build/debug
+Index:
+  Background: Build
+Diagnostics:
+  UnusedIncludes: Strict
+  ClangTidy:
+    FastCheckFilter: Strict

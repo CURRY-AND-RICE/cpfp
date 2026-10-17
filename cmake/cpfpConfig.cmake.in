@@ -1,0 +1,10 @@
+@PACKAGE_INIT@
+include("${CMAKE_CURRENT_LIST_DIR}/cpfpFindBoost.cmake")
+cpfp_find_boost_headers(_CPFP_BOOST_INCLUDE_DIR REQUIRE_1_88)
+include("${CMAKE_CURRENT_LIST_DIR}/cpfpTargets.cmake")
+set_property(TARGET cpfp::cpfp APPEND PROPERTY
+    INTERFACE_INCLUDE_DIRECTORIES "${_CPFP_BOOST_INCLUDE_DIR}")
+set_property(TARGET cpfp::cpfp APPEND PROPERTY
+    INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${_CPFP_BOOST_INCLUDE_DIR}")
+unset(_CPFP_BOOST_INCLUDE_DIR)
+check_required_components(cpfp)

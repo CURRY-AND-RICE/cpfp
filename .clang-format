@@ -1,0 +1,44 @@
+BasedOnStyle: LLVM
+Language: Cpp
+
+# clang-format 21にはc++23という指定がないため、対応する最新の文法を使用する。
+Standard: Latest
+
+# インデントには空白だけを使用し、行幅を100桁に統一する。
+IndentWidth: 4
+ContinuationIndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+# 波括弧は宣言と同じ行に置き、短い関数とラムダは1行での記述を許可する。
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: All
+AllowShortLambdasOnASingleLine: All
+
+# 改行コードをLFに固定し、ファイル末尾の改行を保証する。
+LineEnding: LF
+InsertNewlineAtEOF: true
+
+# ポインタと参照の記号は型側に付け、constなどの位置は自動で変更しない。
+PointerAlignment: Left
+ReferenceAlignment: Left
+QualifierAlignment: Leave
+
+# template宣言とrequires節の改行規則を明示する。
+BreakTemplateDeclarations: MultiLine
+BreakBeforeConceptDeclarations: Always
+RequiresClausePosition: OwnLine
+IndentRequiresClause: true
+
+# namespace本体はインデントせず、開始直後と終了直前に空行を入れる。
+NamespaceIndentation: None
+WrapNamespaceBodyWithEmptyLines: Always
+CompactNamespaces: false
+AllowShortNamespacesOnASingleLine: false
+ShortNamespaceLines: 0
+FixNamespaceComments: true
+
+# includeの順序とブロック分けは記述どおりに保つ。
+SortIncludes: Never
+IncludeBlocks: Preserve

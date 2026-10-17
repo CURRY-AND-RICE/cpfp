@@ -1,0 +1,59 @@
+# Build directories and generated source
+/build/
+/dist/
+/out/
+/cmake-build-*/
+/CMakeUserPresets.json
+compile_commands.json
+
+# CMake and Ninja files from an accidental in-source build
+/CMakeCache.txt
+/CMakeFiles/
+/CTestTestfile.cmake
+/Testing/
+/cmake_install.cmake
+/install_manifest.txt
+/Makefile
+/build.ninja
+/rules.ninja
+/.ninja_deps
+/.ninja_log
+
+# Compiler, linker, coverage, and sanitizer output
+*.o
+*.obj
+*.d
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.gcda
+*.gcno
+*.gcov
+*.profraw
+*.profdata
+/coverage/
+/a.out
+
+# Tool caches
+/.cache/
+/.clangd/
+__pycache__/
+*.py[cod]
+
+# Local environments and scratch output
+/.env
+/.env.*
+!/.env.example
+/.venv/
+/temp
+/tmp/
+
+# Editor backup files and OS metadata
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

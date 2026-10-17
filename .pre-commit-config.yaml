@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    hooks:
+      - id: clang-format-check
+        name: clang-format 21 (check)
+        entry: clang-format --dry-run --Werror
+        language: system
+        files: ^(include|tests|examples)/.*\.(hpp|cpp)$
+      - id: full-project-check
+        name: Full project check (manual)
+        entry: bash scripts/check.sh
+        language: system
+        pass_filenames: false
+        stages: [manual]
