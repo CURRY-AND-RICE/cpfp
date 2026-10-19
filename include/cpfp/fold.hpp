@@ -13,8 +13,13 @@ namespace cpfp {
 
 // Arguments are ordered for pipeline use: foldl(operation)(initial)(range).
 /// `foldl(F op, T init, R&& range) -> decltype(ranges::fold_left(range, init, op))`
-inline constexpr auto foldl =
-    detail::terminal_partial_n<3>([](auto operation, auto initial, auto&& range) {
+inline constexpr auto foldl = detail::terminal_partial_n<3>(
+    [](auto operation, auto initial, auto&& range)
+        requires requires {
+            std::ranges::fold_left(std::forward<decltype(range)>(range), std::move(initial),
+                                   std::move(operation));
+        }
+    {
         return std::ranges::fold_left(std::forward<decltype(range)>(range), std::move(initial),
                                       std::move(operation));
     });
