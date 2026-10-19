@@ -96,6 +96,26 @@ auto in_bounds = cpfp::between(std::cref(lo), std::cref(hi));
 されます。rangeは引数順の最後にあり、実行する呼び出しで直接渡されるため、vector全体は
 コピーされません。
 
+`foldl(op, init)`のように引数を束縛したterminalは、左辺値として呼び出す場合は
+保存済みの値を保持し、必要に応じてコピーして再利用します。ムーブ専用の`init`を束縛した
+場合は、右辺値としてterminalを消費してください。
+
+```cpp
+std::vector xs{1, 2, 3};
+auto consume = cpfp::foldl(
+    [](std::unique_ptr<int> acc, int x) {
+        *acc += x;
+        return acc;
+    },
+    std::make_unique<int>(10));
+auto result = std::move(consume)(xs); // *result == 16
+```
+
+`xs | cpfp::foldl(op, init)`のような一時terminalも同様に束縛値をムーブできます。
+ただし、`std::ranges::fold_left`の演算子自体にはコピー可能性など標準の制約があります。
+また、一時rangeの要素へのポインタ・参照をfold結果に残すと、range破棄後に
+ダングリングします。この点はアダプタの転送改善では防止できません。
+
 ### 関数を受け取るコンビネータ
 
 | API | 生成される関数オブジェクトが保持するもの | 呼び出し時の値 |

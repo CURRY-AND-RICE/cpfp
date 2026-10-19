@@ -46,6 +46,7 @@ if(BUILD_TESTING)
     endfunction()
 
     cpfp_test_target(cpfp_smoke tests/smoke.cpp)
+    cpfp_test_target(cpfp_terminal tests/terminal.cpp)
     cpfp_test_target(cpfp_headers tests/header_self_contained.cpp)
 
     # Each public header must compile independently, not only via the umbrella.
